@@ -1,0 +1,56 @@
+﻿@model IEnumerable<FIT5032AssignmentV1.Models.CourseType>
+@{
+    ViewBag.Title = "English Course Types";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Course types</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseTypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseTypeDec)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseTypeDec)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Image)*@
+                    <img src="~/Content/Image/CourseType/@item.Image" alt="@item.CourseTypeName" style="width:180px" />
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.CourseTypeID }) |
+                    @Html.ActionLink("Provider Courses", "Index", "ProviderCourses")
+                </td>
+            </tr>
+        }
+</table>
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css"
+      rel="stylesheet" />
