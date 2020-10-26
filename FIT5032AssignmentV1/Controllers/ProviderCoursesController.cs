@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using FIT5032AssignmentV1.Models;
+using FIT5032AssignmentV1.Utils;
 
 namespace FIT5032AssignmentV1.Controllers
 {
@@ -17,15 +18,35 @@ namespace FIT5032AssignmentV1.Controllers
         // GET: ProviderCourses
         public ActionResult Index()
         {
-            var providerCourses = db.ProviderCourses.Include(p => p.CourseType).Include(p => p.Provider);
-            //return View(providerCourses.ToList());
+            var providerCourses = db.ProviderCourses.Include(p => p.CourseType).Include(p => p.Provider).ToList();
+            var courseList = new List<ProviderCourse>();
+            //iterate providerCourses and caculate average rating
+            foreach (var pc in providerCourses)
+            {
+                pc.AggregateRating = 0;
+                var booking = db.BookCourses.Where(p => p.ProviderCourseId == pc.ProviderCourseId).ToList();
+                var totalRating = 0;
+                foreach (var pc2 in booking)
+                {
+                    totalRating = totalRating + pc2.Rating;
+                }
+                double avarageRating = double.Parse(totalRating.ToString()) / double.Parse(booking.Count.ToString());
+                if (double.IsNaN(avarageRating))
+                {
+                    avarageRating = 0.0;
+                }
+                pc.AggregateRating = avarageRating;
+                courseList.Add(pc);
+            }
+            // display different view to different role
             if (User.IsInRole("Admin") || User.IsInRole("ProviderManager"))
             {
-                return View("Index", providerCourses.ToList());
+
+                return View("Index", courseList);
             }
             else
             {
-                return View("StudentIndex", providerCourses.ToList());
+                return View("StudentIndex", courseList);
             }
             
         }
@@ -64,6 +85,7 @@ namespace FIT5032AssignmentV1.Controllers
         [Authorize(Roles = "Admin,ProviderManager")]
         public ActionResult Create([Bind(Include = "ProviderCourseId,CourseName,CourseTime,CourseTypeId,ProviderId")] ProviderCourse providerCourse)
         {
+            providerCourse.AggregateRating = 0.0;
             if (ModelState.IsValid)
             {
                 db.ProviderCourses.Add(providerCourse);
@@ -78,17 +100,28 @@ namespace FIT5032AssignmentV1.Controllers
 
         // GET: ProviderCourses/Edit/5
         [Authorize(Roles = "Admin,ProviderManager")]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id,ProviderCourse providerCourse)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ProviderCourse providerCourse = db.ProviderCourses.Find(id);
+            providerCourse = db.ProviderCourses.Find(id);
+            //ProviderCourse providerCourse = db.ProviderCourses.Find(id);
             if (providerCourse == null)
             {
                 return HttpNotFound();
             }
+            var bookCourse = db.BookCourses.Include(p => p.applicationUser).Where(p => p.ProviderCourseId == providerCourse.ProviderCourseId).ToList();
+            List<string> email = new List<string>();
+            foreach (BookCourse book in bookCourse) {
+                email.Add(book.applicationUser.Email);
+            }
+            string subject = "Course information changed(Bulk Email)";
+            string content = "Your Course:" + providerCourse.CourseName + "some information has been changed. Please check it";
+            EmailSender es = new EmailSender();
+            es.SendBulkAttachEmial(email, subject, content);
+
             ViewBag.CourseTypeId = new SelectList(db.CourseTypes, "CourseTypeID", "CourseTypeName", providerCourse.CourseTypeId);
             ViewBag.ProviderId = new SelectList(db.Providers, "ProviderId", "ProviderName", providerCourse.ProviderId);
             return View(providerCourse);
@@ -100,7 +133,7 @@ namespace FIT5032AssignmentV1.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,ProviderManager")]
-        public ActionResult Edit([Bind(Include = "ProviderCourseId,CourseName,CourseTime,CourseTypeId,ProviderId")] ProviderCourse providerCourse)
+        public ActionResult Edit([Bind(Include = "ProviderCourseId,CourseName,CourseTime,CourseTypeId,ProviderId,AggregateRating")] ProviderCourse providerCourse)
         {
             if (ModelState.IsValid)
             {

@@ -36,6 +36,9 @@ namespace FIT5032AssignmentV1.Models
 
         public DbSet<ProviderCourse> ProviderCourses { get; set; }
 
+        public DbSet<BookCourse> BookCourses { get; set; }
+
+        public DbSet<fileUpload> fileUpload { get; set; }
 
     }
 }

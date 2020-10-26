@@ -22,6 +22,7 @@ namespace FIT5032AssignmentV1.Controllers
 
         //POST Roles
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(FormCollection formCollection) {
             try
             {
@@ -47,6 +48,7 @@ namespace FIT5032AssignmentV1.Controllers
 
         // POST: Roles/Edit
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Microsoft.AspNet.Identity.EntityFramework.IdentityRole role)
         {
             try

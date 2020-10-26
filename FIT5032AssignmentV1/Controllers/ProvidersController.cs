@@ -128,6 +128,20 @@ namespace FIT5032AssignmentV1.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public JsonResult GetProviderDetail() {
+
+            try
+            {
+                var providers = db.Providers.ToList();
+                return new JsonResult { Data = providers, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            }
+            catch(Exception ex) {
+                throw ex;
+            }
+               
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

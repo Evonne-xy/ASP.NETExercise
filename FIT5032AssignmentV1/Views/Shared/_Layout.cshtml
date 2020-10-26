@@ -25,6 +25,9 @@
                     <li>@Html.ActionLink("Provider", "Index", "Providers")</li>
                     <li>@Html.ActionLink("CourseType", "Index", "CourseTypes")</li>
                     <li>@Html.ActionLink("Offer Courses", "Index", "ProviderCourses")</li>
+                    <li>@Html.ActionLink("Your Booking", "UserBooking", "BookCourse")</li>
+                    <li>@Html.ActionLink("Live Chat", "Todo", "Home")</li>
+                    <li>@Html.ActionLink("fileUploads", "Create", "fileUploads")</li>
                     <li>
                         @if (User.Identity.IsAuthenticated)
                         {
@@ -61,6 +64,8 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/calendar")
+    @Scripts.Render("~/bundles/datetimepicker")
     @RenderSection("scripts", required: false)
 </body>
 </html>

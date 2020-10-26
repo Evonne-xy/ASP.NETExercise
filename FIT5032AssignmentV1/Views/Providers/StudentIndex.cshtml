@@ -5,7 +5,40 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuKNWWmF9OUUvYayIm3Z92Seug0ps7fEU&callback=initMap&libraries=places&v=weekly"
+        defer></script>
+<link href="~/Style/providerMap.css" rel="stylesheet" />
+
+
 <h2>Course Provider Detail</h2>
+
+
+<div id="floating-panel1">
+    <b>Start destination: </b>
+    <input id="userInput" type="text" placeholder="Enter a location" /><br />
+    <b>End destination: </b>
+    <select id="end">
+        @foreach (var item in Model)
+        {
+            <option value="@item.ProviderAddress">@item.ProviderName</option>
+        }
+    </select><br />
+    <button id="Direction">Get Direction</button>
+</div>
+
+<div id="floating-panel2">
+    <input id="address" type="text" placeholder="Enter a location" />
+    <input id="submit" type="button" value="Search location" />
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <div id="map"></div>
+    </div>
+    <div class="col-md-3"><div id="right-panel" style="max-height: 700px"></div></div>
+
+</div>
 
 
 <table class="table">
@@ -31,8 +64,8 @@
                     @Html.DisplayFor(modelItem => item.ProviderAddress)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.ProviderId }) 
-                   
+                    @Html.ActionLink("Details", "Details", new { id = item.ProviderId })
+
                 </td>
             </tr>
         }
@@ -44,10 +77,12 @@
     @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
     @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
     <script>
- $(document).ready(function () {
- $('.table').DataTable();
- });
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
     </script>
 }
 <link href="~/Content/DataTables/css/dataTables.bootstrap.min.css"
       rel="stylesheet" />
+@Scripts.Render("~/Scripts/googleMap.js")
+

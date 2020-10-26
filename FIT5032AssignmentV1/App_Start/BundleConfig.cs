@@ -21,10 +21,25 @@ namespace FIT5032AssignmentV1
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
+           
+            //Fullcalenda
+            bundles.Add(new ScriptBundle("~/bundles/fullcalendar").Include(
+                        "~/Scripts/lib/jquery.min.js",
+                        "~/Scripts/lib/moment.min.js",
+                        "~/Scripts/fullcalendar.js",
+                        "~/Scripts/calendar.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/datetimepicker").Include(
+                 "~/Scripts/lib/moment.min.js",
+                "~/Scripts/bootstrap-datetimepicker.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/fullcalendar.css",
+                      "~/Content/bootstrap-datetimepicker.css"));
+
+           
         }
     }
 }

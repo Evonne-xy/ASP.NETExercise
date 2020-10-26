@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace FIT5032AssignmentV1.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -24,6 +25,10 @@ namespace FIT5032AssignmentV1.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
+            return View();
+        }
+        public ActionResult ToDo()
+        {
             return View();
         }
     }

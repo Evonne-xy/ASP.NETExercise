@@ -25,6 +25,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CourseTime)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AggregateRating)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -33,25 +36,28 @@
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseType.CourseTypeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Provider.ProviderName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CourseTime)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ProviderCourseId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ProviderCourseId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ProviderCourseId })
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseType.CourseTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Provider.ProviderName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AggregateRating)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProviderCourseId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ProviderCourseId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProviderCourseId })
+            </td>
+        </tr>
         }
     </tbody>
 
