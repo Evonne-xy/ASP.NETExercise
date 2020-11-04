@@ -75,6 +75,34 @@ namespace FIT5032AssignmentV1.Controllers
         
         }
 
+        // GET: BookCourses/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BookCourse bookCourse = db.BookCourses.Find(id);
+            if (bookCourse == null)
+            {
+                return HttpNotFound();
+            }
+            return View(bookCourse);
+        }
+
+        // POST: BookCourses/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            BookCourse bookCourse = db.BookCourses.Find(id);
+            db.BookCourses.Remove(bookCourse);
+            db.SaveChanges();
+            var userId = User.Identity.GetUserId();
+            var userBooking = db.BookCourses.Include(p => p.providerCourse).Include(p => p.applicationUser).Where(m => m.ApplicationUserId == userId);
+            return RedirectToAction("index", userBooking.ToList());
+        }
+
         public void SendEmail() {
             string toEmail = User.Identity.GetUserName();
             string subject = "Course Confirmation";
@@ -84,7 +112,22 @@ namespace FIT5032AssignmentV1.Controllers
             es.SendAttach(toEmail, subject, contents);
         }
 
-
+        public ActionResult Chart() {
+            var courseList = db.ProviderCourses.ToList();
+            List<string> chartName = new List<string>();
+            List<int> chartCount = new List<int>();
+            foreach (var clists in courseList) 
+            {
+                chartName.Add(clists.CourseName);
+                var bookList = db.BookCourses.Where(b => b.ProviderCourseId == clists.ProviderCourseId).ToList();
+                chartCount.Add(bookList.Count);
+            }
+            ViewBag.ChartName = chartName.ToList();
+            ViewBag.ChartCount = chartCount.ToList();
+            return View();
+        
+        
+        }
 
 
     }

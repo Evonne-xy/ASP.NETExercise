@@ -6,7 +6,21 @@
 }
 
 <h2>Provider Courses</h2>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="~/Scripts/fullcalendar.js"></script>
 
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <br />
+            <div id="calendar"></div>
+        </div>
+    </div>
+</div>
+
+
+<div id="bookLink"></div>
 <table class="table">
     <thead>
         <tr>
@@ -33,35 +47,34 @@
 
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseType.CourseTypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Provider.ProviderName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AggregateRating)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Details", new { id = item.ProviderCourseId }) |
-                @Html.ActionLink("BookCourse", "Book", "BookCourse", new { id = item.ProviderCourseId }, null)
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseType.CourseTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Provider.ProviderName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourseTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AggregateRating)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.ProviderCourseId }) |
+                    @Html.ActionLink("BookCourse", "Book", "BookCourse", new { id = item.ProviderCourseId }, null)
 
-            </td>
-        </tr>
+                </td>
+            </tr>
         }
     </tbody>
 
 </table>
 
 @section Scripts {
-
     @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
     @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
     <script>
@@ -69,6 +82,18 @@
             $('.table').DataTable();
         });
     </script>
+
+    <script src="~/Scripts/CourseCalendar.js"></script>
+    <script>
+        $(document).ready(function () {
+            findEvent();
+        });
+    </script>
 }
 <link href="~/Content/DataTables/css/dataTables.bootstrap.min.css"
       rel="stylesheet" />
+
+
+
+
+

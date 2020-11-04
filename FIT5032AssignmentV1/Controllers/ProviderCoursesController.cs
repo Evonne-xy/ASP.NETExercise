@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -14,6 +15,7 @@ namespace FIT5032AssignmentV1.Controllers
     public class ProviderCoursesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        public string CourseTime { get; set; }
 
         // GET: ProviderCourses
         public ActionResult Index()
@@ -172,6 +174,27 @@ namespace FIT5032AssignmentV1.Controllers
             db.ProviderCourses.Remove(providerCourse);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult findAll() {
+            JsonResult result = new JsonResult();
+            try
+            {
+                // Loading.  
+                var providerCourses = db.ProviderCourses.Include(p => p.CourseType).Include(p => p.Provider).ToList();
+
+                // Processing.  
+                result = this.Json(providerCourses, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Info  
+                Console.Write(ex);
+            }
+
+            // Return info.  
+            return result;
+
         }
 
         protected override void Dispose(bool disposing)

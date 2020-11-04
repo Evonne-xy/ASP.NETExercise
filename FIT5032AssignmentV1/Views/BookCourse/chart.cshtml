@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "chart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script src="~/Scripts/Chart.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <h2>Booking Course Chart</h2>
+    <style>
+        #Chart_container {
+            width: 800px;
+            height: 500px;
+            border: 1px solid #ddd; 
+            padding: 1px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="Chart_container">
+        <canvas id="myChart" width="800" height="500"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+    <script>
+        var ctx = document.getElementById('myChart');
+        var countArray = @Html.Raw(Json.Encode(ViewBag.ChartCount));
+        var NameArray = @Html.Raw(Json.Encode(ViewBag.ChartName));
+        console.log(countArray);
+        console.log(NameArray);
+        var myChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: NameArray,
+                datasets: [{
+                    label: 'Booking Course Name',
+                    data: countArray,
+
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                         'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                         'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }],
+
+             
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        stacked: true,
+        
+                    }],
+                    yAxes: [{
+                        stacked: true,
+                  
+                    }]
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+
+

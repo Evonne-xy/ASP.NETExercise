@@ -37,6 +37,8 @@ namespace FIT5032AssignmentV1.Controllers
         {
             try
             {
+                var list = db.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+                ViewBag.roles = list;
                 string UserName = Request.Form["UserName"];
                 string RoleName = Request.Form["RoleName"];
                 ApplicationUser user = db.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
